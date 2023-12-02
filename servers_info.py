@@ -70,7 +70,17 @@ class SSHOperation:
 
         if close_connection:
             self.close_connection()
+            
+    def get_hard_drive_info(self, close_connection=False):
+        # Get hard drive information using lsblk command
+        lsblk_command = "lsblk"
+        stdin, stdout, stderr = self.ssh.exec_command(lsblk_command)
+        hard_drive_info = stdout.read().decode().strip()
+        print("Hard Drive Information:\n", hard_drive_info)
 
+        if close_connection:
+            self.close_connection()
+            
     def show_all(self):
         print('\n' + self.hostname)
         print('-' * 30)
@@ -78,6 +88,7 @@ class SSHOperation:
         self.ufw_status()
         self.open_ports()
         self.server_info()
+        self.get_hard_drive_info()
 
 
 # Example usage:
